@@ -1,45 +1,66 @@
 'use strict';
 
-const file = Bun.file('./test3.txt');
-// const file = Bun.file('./input2.txt');
+// const file = Bun.file('./test2.txt');
+const file = Bun.file('./input2.txt');
 const text = await file.text();
 
-function convertDigits(input) {
-  const num = {
-    one: 1,
-    two: 2,
-    three: 3,
-    four: 4,
-    five: 5,
-    six: 6,
-    seven: 7,
-    eight: 8,
-    nine: 9,
-  };
+const NUM_ENUM = {
+  one: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  six: 6,
+  seven: 7,
+  eight: 8,
+  nine: 9,
+};
 
-  const regex = new RegExp(Object.keys(num).join('|'), 'ig');
+const convertDigits = (input) => {
+  const regex = new RegExp(Object.keys(NUM_ENUM).join('|'), 'i');
 
-  const arr = input.split('\n').map((e) => {
-    let replacedWord = e;
-
-    replacedWord = replacedWord.replace(
-      regex,
-      (match) => num[match.toLowerCase()] || match,
-    );
-
-    // Replace from right to left
-    replacedWord = replacedWord.split('').reverse().join('');
-    replacedWord = replacedWord.replace(
-      regex,
-      (match) => num[match.toLowerCase()] || match,
-    );
-    replacedWord = replacedWord.split('').reverse().join('');
-
-    return replacedWord;
+  const reversedEnum = Object.keys(NUM_ENUM).map((i) => {
+    return i.split('').reverse().join('');
   });
 
-  return arr;
-}
+  const lastRegex = new RegExp(reversedEnum.join('|'), 'i');
+
+  const firstMatch = input.split('\n').map((i) => {
+    return i.replace(regex, (match) => {
+      return match.toLowerCase() in NUM_ENUM
+        ? String(NUM_ENUM[match.toLowerCase()])
+        : match;
+    });
+  });
+
+  const lastMatch = input.split('\n').map((i) => {
+    return i
+      .split('')
+      .reverse()
+      .join('')
+      .replace(lastRegex, (match) => {
+        const reverseMatch = match.split('').reverse().join('');
+        return reverseMatch.toLowerCase() in NUM_ENUM
+          ? String(NUM_ENUM[reverseMatch])
+          : reverseMatch;
+      });
+  });
+
+  const firstDigitMatch = (arr) => {
+    return arr.map((str) => {
+      if (str.length) {
+        const match = str.match(/\d/);
+        if (match) {
+          return parseInt(match[0], 10);
+        }
+      }
+    });
+  };
+
+  return firstDigitMatch(firstMatch).map(
+    (e, index) => String(e) + firstDigitMatch(lastMatch)[index],
+  );
+};
 
 const output = (input) => {
   let sum = 0;
@@ -54,7 +75,6 @@ const output = (input) => {
     if (a.length) {
       a = a[0] + a.charAt(a.length - 1);
       sum += parseInt(a);
-      console.log(a);
     }
   });
 
