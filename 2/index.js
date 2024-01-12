@@ -3,14 +3,7 @@ const text = await file.text();
 // const file = Bun.file('./test');
 // const text = await file.text();
 
-// Task 1
-// Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-// Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
-
-// TODO: only 12 red cubes, 13 green cubes, and 14 blue cubes?
-
-const solution = (input) => {
-  // make condition to win
+const part1Solution = (input) => {
   const winCondition = {
     red: 12,
     green: 13,
@@ -28,13 +21,9 @@ const solution = (input) => {
         green: 0,
         blue: 0,
       };
-      // const [...redMatches] = s.matchAll(/(\d+) red/g);
-      // const [...greenMatches] = s.matchAll(/(\d+) green/g);
-      // const [...blueMatches] = s.matchAll(/(\d+) blue/g);
-      // console.log(s, redMatches, greenMatches, blueMatches);
+
       const sets = s.split(';');
 
-      // TODO: iterate sets with matches and winCondition
       for (const set of sets) {
         const [...redMatches] = set.matchAll(/(\d+) red/g);
         const [...greenMatches] = set.matchAll(/(\d+) green/g);
@@ -60,16 +49,6 @@ const solution = (input) => {
           if (set === sets.at(-1)) return gameNumber;
         }
       }
-
-      // for (const match of redMatches) {
-      //   acc.red = parseInt(match[1]);
-      // }
-      // for (const match of greenMatches) {
-      //   acc.green = parseInt(match[1]);
-      // }
-      // for (const match of blueMatches) {
-      //   acc.blue = parseInt(match[1]);
-      // }
     })
     .filter((e) => Number(e))
     .reduce((acc, cur) => acc + cur, 0);
@@ -77,4 +56,45 @@ const solution = (input) => {
   return a;
 };
 
-console.log(solution(text));
+// console.log(part1Solution(text));
+
+const part2Solution = (input) => {
+  // parse input
+  const a = input
+    .split('\n')
+    .filter((e) => e.trim())
+    .map((s) => {
+      const acc = {
+        red: 0,
+        green: 0,
+        blue: 0,
+        power() {
+          return this.red * this.green * this.blue;
+        },
+      };
+      const sets = s.split(';');
+
+      for (const set of sets) {
+        const [...redMatches] = set.matchAll(/(\d+) red/g);
+        const [...greenMatches] = set.matchAll(/(\d+) green/g);
+        const [...blueMatches] = set.matchAll(/(\d+) blue/g);
+
+        for (const match of redMatches) {
+          if (parseInt(match[1]) > acc.red) acc.red = parseInt(match[1]);
+        }
+        for (const match of greenMatches) {
+          if (parseInt(match[1]) > acc.green) acc.green = parseInt(match[1]);
+        }
+        for (const match of blueMatches) {
+          if (parseInt(match[1]) > acc.blue) acc.blue = parseInt(match[1]);
+        }
+      }
+      return acc.power();
+    })
+    .filter((e) => Number(e))
+    .reduce((acc, cur) => acc + cur, 0);
+
+  return a;
+};
+
+console.log(part2Solution(text));
