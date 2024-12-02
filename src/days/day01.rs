@@ -6,7 +6,7 @@ pub fn run() {
     println!("Hello from day01: {}", result);
 }
 
-fn solve1a(input: &str) -> i64 {
+fn solve(input: &str) -> i64 {
     let big_list: Vec<&str> = input
         .split(|c| c == '\n' || c == ' ' && input.contains("   "))
         .filter(|s| !s.is_empty())
@@ -87,7 +87,6 @@ fn solve1b(input: &str) -> i64 {
             if element == element2 {
                 score += 1;
                 acc += score * element;
-                println!("e1:{}, e2:{}, acc:{}", element, element2, acc);
             }
         }
         acc_global.push(acc)
