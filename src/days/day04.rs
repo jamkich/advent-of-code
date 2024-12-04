@@ -95,11 +95,9 @@ fn xwoosh(grid: &Vec<Vec<char>>, x: usize, y: usize) -> bool {
         let top_left = grid[x - 1][y - 1];
         let bottom_right = grid[x + 1][y + 1];
 
-        // Check top-right and bottom-left positions
         let top_right = grid[x - 1][y + 1];
         let bottom_left = grid[x + 1][y - 1];
 
-        // Ensure that the opposite corners are different pairs
         if (top_left == 'M' && bottom_right == 'S') || (top_left == 'S' && bottom_right == 'M') {
             if (top_right == 'M' && bottom_left == 'S') || (top_right == 'S' && bottom_left == 'M')
             {
