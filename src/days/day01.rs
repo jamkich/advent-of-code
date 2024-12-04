@@ -46,6 +46,7 @@ fn solve(input: &str) -> i64 {
     return diffs.iter().sum();
 }
 
+#[allow(dead_code)]
 fn solve1b(input: &str) -> i64 {
     let big_list: Vec<&str> = input
         .split(|c| c == '\n' || c == ' ' && input.contains("   "))

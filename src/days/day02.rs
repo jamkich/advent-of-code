@@ -6,6 +6,7 @@ pub fn run() {
     println!("{}", result);
 }
 
+#[allow(dead_code)]
 fn solve1a(input: &str) -> i32 {
     let reports: Vec<&str> = input.split('\n').filter(|s| !s.is_empty()).collect();
 
