@@ -85,7 +85,7 @@ pub fn solve(input: &str) -> i32 {
 }
 
 fn xwoosh(grid: &Vec<Vec<char>>, x: usize, y: usize) -> bool {
-    // Check if the center of the 'X' has an 'A'
+    // center
     if grid[x][y] != 'A' {
         return false;
     }
