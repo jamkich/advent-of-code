@@ -73,7 +73,6 @@ pub fn solve(input: &str) -> i32 {
     let c = g[0].len();
     let mut count = 0;
 
-    // Iterate through each cell and check for the 'X-MAS' pattern centered at (i, j)
     for i in 1..r - 1 {
         for j in 1..c - 1 {
             if xwoosh(&g, i, j) {
